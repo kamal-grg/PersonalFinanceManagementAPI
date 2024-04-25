@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace PersonalFinanceManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TransactionsController : ControllerBase
     {
         private readonly PersonalFinanceManagementDBContext _context;
@@ -24,14 +26,15 @@ namespace PersonalFinanceManagementAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransaction()
         {
+            
             return await _context.Transaction.ToListAsync();
         }
-
+        
         // GET: api/Transactions/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Transaction>> GetTransaction(int id)
+        [HttpGet("{transID}")]
+        public async Task<ActionResult<Transaction>> GetTransaction(int transID)
         {
-            var transaction = await _context.Transaction.FindAsync(id);
+            var transaction = await _context.Transaction.FindAsync(transID);
 
             if (transaction == null)
             {
@@ -39,6 +42,44 @@ namespace PersonalFinanceManagementAPI.Controllers
             }
 
             return transaction;
+        }
+
+        // GET: api/Transactions/users/5
+        [HttpGet("/users/{userid}")]
+        public async Task<ActionResult<List<Transaction>>> GetUserTransaction(int userid)
+        {
+            var transaction = await _context.Transaction
+                .Where(t => t.UserId == userid)
+                .ToListAsync();
+               
+
+            if (transaction == null)
+            {
+                return NotFound();
+            }
+
+            return transaction;
+        } // GET: api/Transactions/users/5
+        [HttpGet("/users/{userid}/summary")]
+        public async Task<ActionResult<List<TransactionSummaryDtoResponse>>> GetUserTransactionSummary(int userid)
+        {
+            var transactionSummary = await _context.Transaction
+                .Where(t => t.UserId == userid)
+                .GroupBy(t => new { CategoryId = t.CategoryId ?? 0 })
+                .Select(g => new TransactionSummaryDtoResponse
+                {
+                    CategoryId = g.Key.CategoryId,
+                    CategoryName = _context.Category.FirstOrDefault(c => c.CategoryId == g.Key.CategoryId).CategoryName,
+                    TotalSum = g.Sum(t => t.Amount ?? 0)
+                })
+                .ToListAsync();
+
+            if (transactionSummary == null || transactionSummary.Any(ts => ts.CategoryName == null))
+            {
+                return NotFound();
+            }
+
+            return transactionSummary;
         }
 
         // PUT: api/Transactions/5

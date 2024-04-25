@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace PersonalFinanceManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly PersonalFinanceManagementDBContext _context;
@@ -20,6 +22,8 @@ namespace PersonalFinanceManagementAPI.Controllers
             _context = context;
         }
 
+       
+       
         // GET: api/Users
         [HttpGet]
         public IEnumerable<User> GetUser()
@@ -37,7 +41,11 @@ namespace PersonalFinanceManagementAPI.Controllers
 
             if (user == null)
             {
-                return NotFound();
+                return Ok(new ErrorDtoResponse()
+                {
+                    ReadableMessage = "No such user exists",
+                    Success = false
+                }) ;
             }
 
             return user;

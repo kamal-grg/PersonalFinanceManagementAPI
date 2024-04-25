@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
 // If you have enabled NRTs for your project, then un-comment the following line:
@@ -20,7 +21,9 @@ namespace PersonalFinanceManagementAPI.Models
         public bool? Status { get; set; }
         public string TransactionType { get; set; }
 
+        [JsonIgnore]
         public virtual Category Category { get; set; }
+        [JsonIgnore]
         public virtual User User { get; set; }
     }
 }
