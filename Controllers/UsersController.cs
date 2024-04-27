@@ -12,7 +12,7 @@ namespace PersonalFinanceManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   
     public class UsersController : ControllerBase
     {
         private readonly PersonalFinanceManagementDBContext _context;

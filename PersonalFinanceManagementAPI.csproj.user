@@ -16,8 +16,8 @@
     <WebStackScaffolding_ViewDialogWidth>650.4</WebStackScaffolding_ViewDialogWidth>
     <RazorPage_SelectedScaffolderID>ModelBasedCrudRazorPageScaffolder</RazorPage_SelectedScaffolderID>
     <RazorPage_SelectedScaffolderCategoryPath>root/Common/RazorPage</RazorPage_SelectedScaffolderCategoryPath>
-    <NameOfLastUsedPublishProfile>D:\Price List Project 2\PersonalFinanceManagementAPI\Properties\PublishProfiles\registry.hub.docker.com_kml2331983.pubxml</NameOfLastUsedPublishProfile>
-    <ActiveDebugProfile>PersonalFinanceManagementAPI</ActiveDebugProfile>
+    <NameOfLastUsedPublishProfile>D:\Price List Project 2\PersonalFinanceManagementAPI\Properties\PublishProfiles\registry.hub.docker.com_kml23319831.pubxml</NameOfLastUsedPublishProfile>
+    <ActiveDebugProfile>Docker</ActiveDebugProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
