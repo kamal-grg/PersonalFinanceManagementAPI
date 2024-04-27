@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"  # Assuming your .NET Core app listens on port 80
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=mydb;User=sa;Password=kamal;
+    depends_on:
+      - sqlserver
+    networks:
+      - my_network
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "kamal"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
+    ports:
+      - "1433:1433"
+    networks:
+      - my_network
+networks:
+  my_network:
+    driver: bridge
